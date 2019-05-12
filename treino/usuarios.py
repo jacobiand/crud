@@ -3,7 +3,7 @@ from banco import Banco
 
 class Usuarios(object):
 
-    def __init__(self, idusuario="", nome="", telefone="", email="", usuario="", senha=""):
+    def __init__(self, idusuario=int(0), nome="", telefone="", email="", usuario="", senha=""):
         self.info = {}
         self.idusuario = idusuario
         self.nome = nome
@@ -19,7 +19,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("insert into usuarios (idusuario, nome, telefone, email, usuario, senha) values ('" + self.idusuario + "', '" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
+            c.execute("insert into usuarios (nome, telefone, email, usuario, senha) values ('" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
 
             banco.conexao.commit()
             c.close()
@@ -89,7 +89,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
             print("1")
-            c.execute("select * from usuarios where idusuario = '" + self.idusuario + "' and senha = '" + self.senha + "'")
+            c.execute("select * from usuarios where usuario = '" + self.usuario + "' and senha = '" + self.senha + "'")
             print("2")
             for linha in c:
                 aux0 = linha[0]

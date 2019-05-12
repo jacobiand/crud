@@ -11,7 +11,7 @@ class Banco:
         c = self.conexao.cursor()
 
         c.execute("""create table if not exists usuarios (
-                     idusuario text primary key,
+                     idusuario integer primary key autoincrement,
                      nome text,
                      telefone text,
                      email text,
