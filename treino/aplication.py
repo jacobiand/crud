@@ -67,22 +67,24 @@ class Application:
     def verificaSenha(self):
         usuario = self.nome.get()
         senha = self.senha.get()
-        dadosusuario = Usuarios()
 
-        if (dadosusuario.autenticaUser(usuario, senha) == "sucesso"):
+        dadosusuario = Usuarios(usuario, "1", "2", "3", "4", senha)
+        mensage = dadosusuario.autenticaUser()
+        if (mensage == "sucesso"):
             self.mensagem["text"] = "Autenticado"
-            print(dadosusuario.idusuario)
-        else:
+        elif (mensage == "falha"):
             self.mensagem["text"] = "Erro na autenticação"
-            print(dadosusuario.senha)
+
 
     def cadastraUsuario(self):
         usuario = self.nome.get()
         senha = self.senha.get()
-        dadosusuario = Usuarios(usuario, "123", "321", "213", "312", senha)
-        if dadosusuario.insertUser() == "Usuário cadastrado com sucesso!":
+
+        dadosusuario = Usuarios(usuario, "1", "2", "3", "4", senha)
+        mensage = dadosusuario.insertUser()
+        if mensage == "Usuário cadastrado com sucesso!":
             self.mensagem["text"] = "Sucesso no cadastro"
-        else:
+        elif mensage == "Ocorreu um erro na inserção do usuário":
             self.mensagem["text"] = "Falha no cadastro"
 
 

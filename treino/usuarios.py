@@ -19,8 +19,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute(
-                "insert into usuarios (nome, telefone, email, usuario, senha) values ('" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
+            c.execute("insert into usuarios (idusuario, nome, telefone, email, usuario, senha) values ('" + self.idusuario + "', '" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
 
             banco.conexao.commit()
             c.close()
@@ -36,8 +35,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute(
-                "update usuarios set nome = '" + self.nome + "', telefone = '" + self.telefone + "', email = '" + self.email + "', usuario = '" + self.usuario + "', senha = '" + self.senha + "' where idusuario = " + self.idusuario + " ")
+            c.execute("update usuarios set nome = '" + self.nome + "', telefone = '" + self.telefone + "', email = '" + self.email + "', usuario = '" + self.usuario + "', senha = '" + self.senha + "' where idusuario = '" + self.idusuario + "'")
 
             banco.conexao.commit()
             c.close()
@@ -53,7 +51,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("delete from usuarios where idusuario = " + self.idusuario + " ")
+            c.execute("delete from usuarios where idusuario = '" + self.idusuario + "'")
 
             banco.conexao.commit()
             c.close()
@@ -68,7 +66,7 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("select * from usuarios where idusuario = " + idusuario + " ")
+            c.execute("select * from usuarios where idusuario = '" + idusuario + "'")
 
             for linha in c:
                 self.idusuario = linha[0]
@@ -85,19 +83,27 @@ class Usuarios(object):
             return "Ocorreu um erro na busca do usuário"
 
 
-    def autenticaUser(self, idusuario, senha):
+    def autenticaUser(self):
         banco = Banco()
         try:
 
             c = banco.conexao.cursor()
+            print("1")
+            c.execute("select * from usuarios where idusuario = '" + self.idusuario + "' and senha = '" + self.senha + "'")
+            print("2")
+            for linha in c:
+                aux0 = linha[0]
+                aux1 = linha[1]
+                aux2 = linha[2]
+                aux3 = linha[3]
+                aux4 = linha[4]
+                aux5 = linha[5]
+                if ((self.idusuario == aux0) and (self.senha == aux5)):
+                    c.close()
+                    return "sucesso"
 
-            c.execute("select * from usuarios where idusuario = " + idusuario + " and senha = " + senha + " ")
-
-            if ((idusuario == c[0]) and (senha == c[5])):
-                c.close()
-                return "sucesso"
-            else:
-                return "falha"
+            c.close()
+            return "falha"
 
         except:
             return "falha"
