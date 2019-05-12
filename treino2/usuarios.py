@@ -3,7 +3,7 @@ from banco import Banco
 
 class Usuarios(object):
 
-    def __init__(self, idusuario=int(0), nome="", telefone="", email="", usuario="", senha=""):
+    def __init__(self, idusuario=0, nome="", telefone="", email="", usuario="", senha=""):
         self.info = {}
         self.idusuario = idusuario
         self.nome = nome
@@ -19,14 +19,19 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("insert into usuarios (nome, telefone, email, usuario, senha) values ('" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
+
+            aux = self.selectUser(self.usuario)
+            if aux == "Select sucesso - usuario nao existe":
+                c.execute("insert into usuarios (nome, telefone, email, usuario, senha) values ('" + self.nome + "', '" + self.telefone + "', '" + self.email + "', '" + self.usuario + "', '" + self.senha + "' )")
 
             banco.conexao.commit()
             c.close()
-
-            return "Usuário cadastrado com sucesso!"
+            if aux == "Select sucesso - usuario nao existe":
+                return "Insert sucesso"
+            else:
+                return "Insert falha - usuario ja existe"
         except:
-            return "Ocorreu um erro na inserção do usuário"
+            return "Inser falha - error"
 
     def updateUser(self):
 
@@ -40,9 +45,9 @@ class Usuarios(object):
             banco.conexao.commit()
             c.close()
 
-            return "Usuário atualizado com sucesso!"
+            return "Update sucesso"
         except:
-            return "Ocorreu um erro na alteração do usuário"
+            return "Update falha - error"
 
     def deleteUser(self):
 
@@ -51,23 +56,22 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("delete from usuarios where idusuario = '" + self.idusuario + "'")
+            c.execute("delete from usuarios where usuario = '" + self.usuario + "'")
 
             banco.conexao.commit()
             c.close()
 
-            return "Usuário excluído com sucesso!"
+            return "Delete sucesso"
         except:
-            return "Ocorreu um erro na exclusão do usuário"
+            return "Delete falha - error"
 
-    def selectUser(self, idusuario):
+    def selectUser(self, usuario):
         banco = Banco()
         try:
 
             c = banco.conexao.cursor()
 
-            c.execute("select * from usuarios where idusuario = '" + idusuario + "'")
-
+            c.execute("select * from usuarios where usuario = '" + usuario + "'")
             for linha in c:
                 self.idusuario = linha[0]
                 self.nome = linha[1]
@@ -77,10 +81,13 @@ class Usuarios(object):
                 self.senha = linha[5]
 
             c.close()
-
-            return "Busca feita com sucesso!"
+            print(self.idusuario)
+            if self.idusuario == 0:
+                return "Select sucesso - usuario nao existe"
+            else:
+                return "Select sucesso - usuario ja existe"
         except:
-            return "Ocorreu um erro na busca do usuário"
+            return "Select falha - error"
 
 
     def autenticaUser(self):
@@ -100,10 +107,10 @@ class Usuarios(object):
                 aux5 = linha[5]
                 if ((self.idusuario == aux0) and (self.senha == aux5)):
                     c.close()
-                    return "sucesso"
+                    return "Autentica sucesso"
 
             c.close()
-            return "falha"
+            return "Autentica falha - usuario não encontrado"
 
         except:
-            return "falha"
+            return "Autentica falha - error"

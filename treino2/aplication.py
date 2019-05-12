@@ -128,10 +128,12 @@ class Application:
 
         dadosusuario = Usuarios("", "", "", usuario, senha)
         mensage = dadosusuario.autenticaUser()
-        if (mensage == "sucesso"):
-            self.lblmsg["text"] = "Autenticado"
-        elif (mensage == "falha"):
-            self.lblmsg["text"] = "Erro na autenticação"
+        if (mensage == "Autentica sucesso"):
+            self.lblmsg["text"] = "Usuário autenticado com sucesso"
+        elif (mensage == "Autentica falha - usuario não encontrado"):
+            self.lblmsg["text"] = "Usuário não está cadastrado"
+        else:
+            self.lblmsg["text"] = "Falha na autenticação"
 
     #cadastra um novo usuario
     def inserirUsuario(self):
@@ -144,18 +146,20 @@ class Application:
         user.senha = self.txtsenha.get()
 
         mensage = user.insertUser()
-        if mensage == "Usuário cadastrado com sucesso!":
-            self.lblmsg["text"] = "Sucesso no cadastro"
-        elif mensage == "Ocorreu um erro na inserção do usuário":
-            self.lblmsg["text"] = "Falha no cadastro"
+        if mensage == "Insert sucesso":
+            self.lblmsg["text"] = "Usuário cadastrado com sucesso"
+        elif mensage == "Insert falha - usuario ja existe":
+            self.lblmsg["text"] = "Usuário já esta cadastrado"
+        else:
+            self.lblmsg["text"] = "Falha ao tentar cadastrar"
 
 
     #busca um usuario
     def buscarUsuario(self):
         user = Usuarios()
-        idusuario = self.txtidusuario.get()
+        usuario = self.txtusuario.get()
 
-        self.lblmsg["text"] = user.selectUser(idusuario)
+        self.lblmsg["text"] = user.selectUser(usuario)
 
         self.txtidusuario.delete(0, END)
         self.txtidusuario.insert(INSERT, user.idusuario)
