@@ -1,7 +1,7 @@
 from banco import Banco
 
 
-class Empregados(object):
+class Empregos(object):
 
     def __init__(self, idemprego=0,  emprego="", empresa=""):
         self.idemprego = idemprego
@@ -13,15 +13,19 @@ class Empregados(object):
         banco = Banco()
 
         try:
+            if self.verificaEmpregos() == "Verifica sucesso - emprego não cadastrado":
+                c = banco.conexao.cursor()
 
-            c = banco.conexao.cursor()
+                c.execute("insert into empregos (emprego, empresa) values ('" + self.emprego + "', '" + self.empresa + "')")
 
-            c.execute("insert into empregos (emprego, empresa) values ('" + self.emprego + "', '" + self.empresa + "')")
+                banco.conexao.commit()
+                c.close()
 
-            banco.conexao.commit()
-            c.close()
+                return "Insert sucesso"
 
-            return "Insert sucesso"
+            #banco.conexao.commit()
+            #c.close()
+            return "Insert sucesso - emprego nesta empresa ja cadastrado"
         except:
             return "Insert falha"
 
@@ -33,7 +37,7 @@ class Empregados(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("delete from empregos where idemprego = '" + self.idemprego + "'")
+            c.execute("delete from empregos where emprego = '" + self.emprego + "' and empresa = '" + self.empresa + "'")
 
             banco.conexao.commit()
             c.close()
@@ -50,7 +54,7 @@ class Empregados(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("update empregos set emprego = '" + self.emprego + "', empresa = '" + self.empresa + "' where idemprego = '" + self.idemprego + "'")
+            c.execute("update empregos set emprego = '" + self.emprego + "', empresa = '" + self.empresa + "' where emprego = '" + self.emprego + "', '" + self.empresa + "'")
 
             banco.conexao.commit()
             c.close()
@@ -67,15 +71,37 @@ class Empregados(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("select * from empregos where '" + self.idemprego + "'")
-            for linha on c:
+            c.execute("select * from empregos where emprego = '" + self.emprego + "'")
+            for linha in c:
                 self.idemprego = linha[0]
                 self.emprego = linha[1]
                 self.empresa = linha[2]
 
             c.close()
-
+            if self.idemprego == 0:
+                return "Select sucesso - emprego não cadastrado"
             return "Select sucesso"
         except:
             return "Select falha"
+
+
+    def verificaEmpregos(self):
+        banco = Banco()
+
+        try:
+
+            c = banco.conexao.cursor()
+
+            c.execute("select * from empregos where emprego = '" + self.emprego + "' and empresa = '" + self.empresa + "'")
+            for linha in c:
+                self.idemprego = linha[0]
+                self.emprego = linha[1]
+                self.empresa = linha[2]
+
+            c.close()
+            if self.idemprego == 0:
+                return "Verifica sucesso - emprego não cadastrado"
+            return "Verifica sucesso"
+        except:
+            return "Verifica falha"
 

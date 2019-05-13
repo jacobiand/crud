@@ -40,11 +40,10 @@ class Usuarios(object):
 
             c = banco.conexao.cursor()
 
-            c.execute("update usuarios set nome = '" + self.nome + "', telefone = '" + self.telefone + "', email = '" + self.email + "', usuario = '" + self.usuario + "', senha = '" + self.senha + "' where idusuario = '" + self.idusuario + "'")
+            c.execute("update usuarios set nome = '" + self.nome + "', telefone = '" + self.telefone + "', email = '" + self.email + "', usuario = '" + self.usuario + "', senha = '" + self.senha + "' where usuario = '" + self.usuario + "'")
 
             banco.conexao.commit()
             c.close()
-
             return "Update sucesso"
         except:
             return "Update falha - error"
@@ -64,6 +63,7 @@ class Usuarios(object):
             return "Delete sucesso"
         except:
             return "Delete falha - error"
+
 
     def selectUser(self, usuario):
         banco = Banco()
@@ -95,21 +95,21 @@ class Usuarios(object):
         try:
 
             c = banco.conexao.cursor()
-            print("1")
+
             c.execute("select * from usuarios where usuario = '" + self.usuario + "' and senha = '" + self.senha + "'")
-            print("2")
+
             for linha in c:
-                aux0 = linha[0]
-                aux1 = linha[1]
-                aux2 = linha[2]
-                aux3 = linha[3]
-                aux4 = linha[4]
-                aux5 = linha[5]
-                if ((self.idusuario == aux0) and (self.senha == aux5)):
-                    c.close()
-                    return "Autentica sucesso"
+                self.idusuario = linha[0]
+                self.nome = linha[1]
+                self.telefone = linha[2]
+                self.email = linha[3]
+                self.usuario = linha[4]
+                self.senha = linha[5]
 
             c.close()
+            if self.idusuario > 0:
+                return "Autentica sucesso"
+
             return "Autentica falha - usuario não encontrado"
 
         except:
