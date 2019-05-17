@@ -1,5 +1,4 @@
 from banco import Banco
-import sqlite3
 
 
 class Carrinho():

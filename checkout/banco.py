@@ -40,7 +40,7 @@ class Banco:
 
         c.execute("""create table if not exists carrinhos (
                         idinsercao integer primary key autoincrement,
-                        idusuario integer,
-                        idproduto integer)""")
+                        idusuario number,
+                        idproduto number)""")
         self.conexao.commit()
         c.close()

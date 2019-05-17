@@ -1,0 +1,19 @@
+inicialmente o cliente deve autenticar se autenticar, com usuario e senha
+
+informe os dados:
+- insira o usuario
+- insira a senha
+- se ja possuir cadastro clique em autenticar
+- senão clique em cadastrar e preencha os dados e clique em inserir
+- após isso clique em autenticar
+
+caso não haja produtos cadastrados
+
+informe os dados do produto:
+- insira os dados do produto e clique em cadastrar
+
+caso o produta ja estaja cadastrado, preencha o nome clique em buscar
+
+para adicionar item no carrinho:
+- autentique o usuario e cadastre busque um produto, clique em cadastrar.
+obs.: neste momento deu um erro no banco de dados, mesmo usando os comandos corretos, mesmos utilizados para inserir nos cadastro do cliente e de produto. Não consegui resolver.
