@@ -1,10 +1,12 @@
 import sqlite3
+#import MySQLdb
 
 
 class Banco:
 
     def __init__(self):
         self.conexao = sqlite3.connect('banco.db')
+        #self.conexao = mysql.connect(host="localhost", user="root", passwd="12345678")
         self.createTableUsuarios()
         self.createTableEmpregos()
         self.createTableEmpregados()
